@@ -16,20 +16,21 @@ const Part = (props) => {
 
 // 重构后的 Content 组件，内部渲染三个 Part
 const Content = (props) => {
+  const parts = props.parts
   return (
     <div>
-      <Part part={props.part1.name} exercises={props.part1.exercises} />
-      <Part part={props.part2.name} exercises={props.part2.exercises} />
-      <Part part={props.part3.name} exercises={props.part3.exercises} />
-
+      <Part part={parts[0].name} exercises={parts[0].exercises} />
+      <Part part={parts[1].name} exercises={parts[1].exercises} />
+      <Part part={parts[2].name} exercises={parts[2].exercises} />
     </div>
   )
 }
 
 const Total = (props) => {
+  const parts = props.parts
   return (
     <div>
-      <p>Number of exercises {props.temp1 + props.temp2 + props.temp3}</p>
+      <p>Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}</p>
     </div>
   )
 }
@@ -55,12 +56,8 @@ const App = () => {
     <div>
       <Header course={course} />
       {/* 一次性把三组数据传给 Content，只渲染一次 Content */}
-      <Content
-        part1={parts[0]}
-        part2={parts[1]}
-        part3={parts[2]}
-      />
-      <Total temp1={parts[0].exercises} temp2={parts[1].exercises} temp3={parts[2].exercises} />
+      <Content parts={parts} />
+      <Total parts={parts} />
     </div>
   )
 }
