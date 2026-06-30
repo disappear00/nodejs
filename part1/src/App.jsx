@@ -38,7 +38,7 @@ const App = () => {
     setTotal(updateRight + left)
   }
 
-  debugger
+
   return (
     <div>
       {left}
