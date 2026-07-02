@@ -1,19 +1,22 @@
-import { useState } from 'react'
-
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 const App = () => {
-  const [persons, setPersons] = useState([
-    {
-      name: 'Arto Hellas',
-      number: '13785985529',
-    },
-    {
-      name: 'wanghaoran',
-      number: '15731985529',
-    }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchStr, setSearchStr] = useState('')
+
+  useEffect(() => {
+    console.log('effect');
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled');
+        setPersons(response.data)
+      })
+  }, [])
+
+
   const handleSubmit = (event) => {
     event.preventDefault()
     // 去除首尾空格
