@@ -1,22 +1,31 @@
-import Note from './components/Note'
+import Notes from './components/Note'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import noteService from './services/notes'
+
 
 const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('a new note ...')
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/notes')
+    noteService
+      .getAll()
       .then(response => {
-        console.log('promise')
         setNotes(response.data)
       })
   }, [])
   console.log('render', notes.length, 'notes');
 
+  const toggleImportanceOf = id => {
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !note.important }
+    noteService
+      .update(id, changedNote)
+      .then(response => {
+        setNotes(notes.map(note => note.id === id ? response.data : note))
+      })
+  }
 
   const handleNoteChange = (event) => {
     console.log(event.target.value);
@@ -41,7 +50,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
-      <Note notes={notes}></Note>
+      <Notes notes={notes} toggleImportanceOf={(id) => toggleImportanceOf(id)}></Notes>
       <form onSubmit={addNote}>
         <input value={newNote}
           onChange={handleNoteChange} />
