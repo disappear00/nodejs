@@ -1,6 +1,5 @@
 import Notes from './components/Note'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import noteService from './services/notes'
 import './index.css'
 import Footer from './components/footer'
@@ -59,11 +58,10 @@ const App = () => {
       content: newNote,
       important: Math.random() < 0.5,
     }
-    axios
-      .post('http://localhost:3001/notes', noteObject)
-      .then(response => {
-        console.log(response);
-        setNotes(notes.concat(response.data))
+    noteService
+      .create(noteObject)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
         setNewNote('')
       })
   }
